@@ -1,52 +1,56 @@
+# ETI/Domo opening device.
+
 import logging
-from typing import List, Optional
+from typing import List
+
+from .base import TYPE_OPENING, CameDevice, DeviceState
 
 _LOGGER = logging.getLogger(__name__)
 
-class OpeningEntity:
-    def __init__(self, manager, opening_info):
-        self._manager = manager
-        self._opening_info = opening_info
+# Opening states
+OPENING_STATE_CLOSED = 0
+OPENING_STATE_OPEN = 1
+
+class CameOpening(CameDevice):
+    """ETI/Domo opening device class."""
+
+    def __init__(self, manager, device_info: DeviceState):
+        """Init instance."""
+        super().__init__(manager, TYPE_OPENING, device_info)
 
     @property
-    def name(self) -> str:
-        return self._opening_info.get("name", "Unknown Opening")
-
-    @property
-    def act_id_open(self) -> int:
-        return self._opening_info.get("act_id_open", -1)
-
-    @property
-    def act_id_close(self) -> int:
-        return self._opening_info.get("act_id_close", -1)
-
-    @property
-    def floor_index(self) -> int:
-        return self._opening_info.get("floor_ind", -1)
-
-    @property
-    def room_index(self) -> int:
-        return self._opening_info.get("room_ind", -1)
-
-    @property
-    def status(self) -> int:
-        return self._opening_info.get("status", -1)
-
-    @property
-    def partial_commands(self) -> List[dict]:
-        return self._opening_info.get("partial", [])
+    def opening_state(self) -> int:
+        """Get the state of the opening."""
+        return self._device_info.get("status")
 
     def open(self):
-        self._move(1)
+        """Open the opening."""
+        self.move(OPENING_STATE_OPEN)
 
     def close(self):
-        self._move(2)
+        """Close the opening."""
+        self.move(OPENING_STATE_CLOSED)
 
-    def _move(self, wanted_status):
-        self._manager.opening_move_req(self.act_id_open, wanted_status)
+    def move(self, state: int):
+        """Move the opening to a specific state."""
+        if state not in [OPENING_STATE_CLOSED, OPENING_STATE_OPEN]:
+            raise ValueError("Invalid state value")
 
-    def __str__(self):
-        return f"OpeningEntity(name={self.name}, status={self.status})"
+        self._check_act_id()
 
-    def __repr__(self):
-        return str(self)
+        cmd = {
+            "cmd_name": "opening_move_req",
+            "act_id": self.act_id,
+            "wanted_status": state,
+        }
+
+        _LOGGER.debug('Moving opening "%s" to state: %s', self.name, state)
+
+        self._manager.application_request(cmd)
+
+    def update(self):
+        """Update device state."""
+        self._force_update("opening")
+
+    # ... (other methods if present)
+
