@@ -15,6 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 TYPE_LIGHT = 0
 TYPE_THERMOSTAT = 2
 TYPE_ANALOG_SENSOR = -1
+TYPE_OPENING = 1
 
 TYPES = {
     # Internal types
