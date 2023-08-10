@@ -8,6 +8,7 @@ from pycame.devices.came_analog_sensor import CameAnalogSensor
 from .base import CameDevice
 from .came_light import CameLight
 from .came_thermo import CameThermo
+from .came_opening import CameOpening
 
 _LOGGER = logging.getLogger(__name__)
 
