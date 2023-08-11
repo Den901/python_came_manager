@@ -4,6 +4,7 @@ import logging
 from typing import List
 
 from pycame.devices.came_analog_sensor import CameAnalogSensor
+from pycame.devices.came_energy_meter import CameEnergyMeter
 
 from .base import CameDevice
 from .came_light import CameLight
