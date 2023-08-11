@@ -20,6 +20,7 @@ TYPE_OPENING = 1
 TYPES = {
     # Internal types
     -1: "Analog Sensor",
+    -2: "Energy Meter",
     # CAME types
     0: "Light",
     1: "Opening",
