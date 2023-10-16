@@ -56,8 +56,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-[contributors]: https://github.com/lrzdeveloper/python-came-manager/graphs/contributors
-[license]: https://github.com/lrzdeveloper/python-came-manager/blob/main/LICENSE.md
+[contributors]: https://github.com/Den901/python-came-manager/graphs/contributors
+[license]: https://github.com/Den901/python-came-manager/blob/main/LICENSE.md
 [license-shield]: https://img.shields.io/pypi/l/pycame.svg?style=popout
 [maintained]: https://img.shields.io/maintenance/yes/2021.svg?style=popout
 [pypi]: https://pypi.org/project/pycame/
