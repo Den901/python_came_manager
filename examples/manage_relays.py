@@ -30,7 +30,7 @@ manager.get_device_by_name(RELAY_NAME).turn_on()
 print("Wait for 10 seconds...")
 sleep(10)
 
-print("Turn off light")
+print("Turn off relay")
 manager.get_device_by_name(RELAY_NAME).turn_off()
 
 print("Wait for 10 seconds...")
