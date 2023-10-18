@@ -24,7 +24,8 @@ python3 -m pip install -U pycame
 ## Usage example
 
 ```python
-py -3 status_updates.py #view the states of the devices
+pip install -e git+https://github.com/Den901/python_came_manager.git#egg=pycame
+
 ```
 
 ## Authors & contributors
