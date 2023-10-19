@@ -1,2 +1,0 @@
-requests~=2.26
-aiohttp~=3.7
