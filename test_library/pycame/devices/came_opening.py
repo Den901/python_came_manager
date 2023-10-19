@@ -63,4 +63,4 @@ class CameOpening(CameDevice):
 
     def update(self):
         """Update device state."""
-        self._force_update("relay")
+        self._force_update("opening")
