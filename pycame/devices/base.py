@@ -21,7 +21,7 @@ TYPE_ENERGY_SENSOR = -2 #energy measurement
 
 TYPES = {
     # Internal types
-    -2: "Energy Sensor"
+    -2: "Energy Sensor",
     -1: "Analog Sensor",
     0: "Light",
     1: "Opening",
