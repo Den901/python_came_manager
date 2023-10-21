@@ -6,16 +6,19 @@ from typing import List
 from pycame.devices.came_analog_sensor import CameAnalogSensor
 from pycame.devices.came_energy_sensor import CameEnergySensor
 
+
 from .base import CameDevice
 from .came_light import CameLight
 from .came_thermo import CameThermo
 from .came_relay import CameRelay
 from .came_opening import CameOpening
 
+
 _LOGGER = logging.getLogger(__name__)
 
+
 def get_featured_devices(manager, feature: str) -> List[CameDevice]:
-    """Get device implementations for the given feature."""
+    """Get device implementations for given feature."""
     devices = []
 
     if feature == "lights":
@@ -30,6 +33,7 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
+
     if feature == "openings":
         cmd = {
             "cmd_name": "openings_list_req",
@@ -42,6 +46,8 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
+
+
     if feature == "relays":
         cmd = {
             "cmd_name": "relays_list_req",
@@ -53,6 +59,10 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
             devices.append(CameRelay(manager, device_info))
 
         return devices
+
+
+
+
 
     if feature == "thermoregulation":
         cmd = {
@@ -75,16 +85,23 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
-    if feature == "energy":
-       cmd = {
-           "cmd_name": "meters_list_req",
-           "topologic_scope": "plant",
-       }
-       response = manager.application_request(cmd, "meters_list_resp")
+    if feature == "Energy Sensor": #DA RIVEDERDE
+        cmd = {
+            "cmd_name": "meter_list_req",
+            "topologic_scope": "plant",
+        }
+        response = manager.application_request(cmd, "meter_list_resp")
 
-       for device_info in response.get("array", []):
-        devices.append(CameEnergySensor(manager, device_info))
-
-       return devices
+        for device_info in response.get("array", []):
+            devices.append(CameEnergySensor(manager, device_info))
 
 
+        return devices
+
+
+
+
+
+
+    _LOGGER.warning("Unsupported feature type: %s", feature)
+    return []
