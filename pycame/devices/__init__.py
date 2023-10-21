@@ -6,16 +6,13 @@ from typing import List
 from pycame.devices.came_analog_sensor import CameAnalogSensor
 from pycame.devices.came_energy_sensor import CameEnergySensor
 
-
 from .base import CameDevice
 from .came_light import CameLight
 from .came_thermo import CameThermo
 from .came_relay import CameRelay
 from .came_opening import CameOpening
 
-
 _LOGGER = logging.getLogger(__name__)
-
 
 def get_featured_devices(manager, feature: str) -> List[CameDevice]:
     """Get device implementations for given feature."""
@@ -33,7 +30,6 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
-
     if feature == "openings":
         cmd = {
             "cmd_name": "openings_list_req",
@@ -46,8 +42,6 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
-
-
     if feature == "relays":
         cmd = {
             "cmd_name": "relays_list_req",
@@ -59,10 +53,6 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
             devices.append(CameRelay(manager, device_info))
 
         return devices
-
-
-
-
 
     if feature == "thermoregulation":
         cmd = {
@@ -85,40 +75,21 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
-#    if feature == "energy":
-#        cmd = {
-#            "cmd_name": "meters_list_req",
-#            "topologic_scope": "plant",
-#        }
-#        response = manager.application_request(cmd, "meters_list_resp")
-#
-#        for device_info in response.get("array", []):
-#            devices.append(CameEnergySensor(manager, device_info))
-
-
-#        for sensor in ["meter_type", "produced", "instant_power", "unit", "energy_unit", "last_24h_avg", "last_month_avg" ]:
-#            res = response.get(sensor)
-#            if res is not None:
-
-#        return device
     if feature == "energy":
-       cmd = {
-           "cmd_name": "meters_list_req",
-           "topologic_scope": "plant",
-    }
-    response = manager.application_request(cmd, "meters_list_resp")
+        cmd = {
+            "cmd_name": "meters_list_req",
+            "topologic_scope": "plant",
+        }
+        response = manager.application_request(cmd, "meters_list_resp")
 
-    for device_info in response.get("array", []):
-        # Creare un sensore per ogni elemento nell'array
-        device = CameEnergySensor(manager, device_info)
+        for device_info in response.get("array", []):
+            # Create a sensor for each element in the array
+            device = CameEnergySensor(manager, device_info)
 
-        # Aggiungere il sensore alla lista dei dispositivi
-        devices.append(device)
+            # Add the sensor to the list of devices
+            devices.append(device)
 
-
-
-
-
+        return devices
 
     _LOGGER.warning("Unsupported feature type: %s", feature)
     return []
