@@ -85,7 +85,7 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
-    if feature == "Energy Sensor": #DA RIVEDERDE
+    if feature == "energy": #DA RIVEDERDE
         cmd = {
             "cmd_name": "meters_list_req",
             "topologic_scope": "plant",
