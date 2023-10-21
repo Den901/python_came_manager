@@ -82,9 +82,9 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
     }
     response = manager.application_request(cmd, "meters_list_resp")
 
-    for meter_data in response.get("array", []):
-        devices.append(CameEnergySensor(manager, meter_data))
+    for device_info in response.get("array", []):
+        devices.append(CameEnergySensor(manager, device_info))
 
         return devices
 
-                        
+
