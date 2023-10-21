@@ -15,7 +15,7 @@ from .came_opening import CameOpening
 _LOGGER = logging.getLogger(__name__)
 
 def get_featured_devices(manager, feature: str) -> List[CameDevice]:
-    """Get device implementations for given feature."""
+    """Get device implementations for the given feature."""
     devices = []
 
     if feature == "lights":
@@ -82,14 +82,24 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
         }
         response = manager.application_request(cmd, "meters_list_resp")
 
-        for device_info in response.get("array", []):
-            # Create a sensor for each element in the array
-            device = CameEnergySensor(manager, device_info)
+        devices = []  # Lista per memorizzare i sensori
 
-            # Add the sensor to the list of devices
-            devices.append(device)
+        if "array" in response:
+            for meter_data in response["array"]:
+                # Creare un sensore utilizzando i dati dell'insieme
+                device = CameEnergySensor(manager, {
+                    "name": meter_data["name"],
+                    "id": meter_data["id"],
+                    "meter_type": meter_data["meter_type"],
+                    "produced": meter_data["produced"],
+                    "instant_power": meter_data["instant_power"],
+                    "unit": meter_data["unit"],
+                    "energy_unit": meter_data["energy_unit"],
+                    "last_24h_avg": meter_data["last_24h_avg"],
+                    "last_month_avg": meter_data["last_month_avg"]
+                })
+
+                # Aggiungere il sensore alla lista dei dispositivi
+                devices.append(device)
 
         return devices
-
-    _LOGGER.warning("Unsupported feature type: %s", feature)
-    return []
