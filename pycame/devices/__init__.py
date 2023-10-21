@@ -76,30 +76,25 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
         return devices
 
     if feature == "energy":
-    cmd = {
-        "cmd_name": "meters_list_req",
-        "topologic_scope": "plant",
-    }
-    response = manager.application_request(cmd, "meters_list_resp")
+        cmd = {
+            "cmd_name": "meters_list_req",
+            "topologic_scope": "plant",
+        }
+        response = manager.application_request(cmd, "meters_list_resp")
 
-    devices = []  # Lista per memorizzare i sensori
-
-    if "array" in response:
-        for meter_data in response["array"]:
-            # Creare un sensore utilizzando i dati dell'insieme
-            device = CameEnergySensor(manager, {
-                "name": meter_data["name"],
-                "id": meter_data["id"],
-                "meter_type": meter_data["meter_type"],
-                "produced": meter_data["produced"],
-                "instant_power": meter_data["instant_power"],
-                "unit": meter_data["unit"],
-                "energy_unit": meter_data["energy_unit"],
-                "last_24h_avg": meter_data["last_24h_avg"],
-                "last_month_avg": meter_data["last_month_avg"]
-            })
-
-            # Aggiungere il sensore alla lista dei dispositivi
-            devices.append(device)
+        if "array" in response:
+            for meter_data in response["array"]:
+                device = CameEnergySensor(manager, {
+                    "name": meter_data["name"],
+                    "id": meter_data["id"],
+                    "meter_type": meter_data["meter_type"],
+                    "produced": meter_data["produced"],
+                    "instant_power": meter_data["instant_power"],
+                    "unit": meter_data["unit"],
+                    "energy_unit": meter_data["energy_unit"],
+                    "last_24h_avg": meter_data["last_24h_avg"],
+                    "last_month_avg": meter_data["last_month_avg"]
+                })
+                devices.append(device)
 
     return devices
