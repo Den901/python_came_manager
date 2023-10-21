@@ -101,9 +101,10 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 #            if res is not None:
 
 #        return device
-    if feature == "energy":#    cmd = {
-        "cmd_name": "meters_list_req",
-        "topologic_scope": "plant",
+    if feature == "energy":
+       cmd = {
+           "cmd_name": "meters_list_req",
+           "topologic_scope": "plant",
     }
     response = manager.application_request(cmd, "meters_list_resp")
 
