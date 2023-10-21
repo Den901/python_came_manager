@@ -85,18 +85,34 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
 
         return devices
 
-    if feature == "energy":
-        cmd = {
-            "cmd_name": "meters_list_req",
-            "topologic_scope": "plant",
-        }
-        response = manager.application_request(cmd, "meters_list_resp")
+#    if feature == "energy":
+#        cmd = {
+#            "cmd_name": "meters_list_req",
+#            "topologic_scope": "plant",
+#        }
+#        response = manager.application_request(cmd, "meters_list_resp")
+#
+#        for device_info in response.get("array", []):
+#            devices.append(CameEnergySensor(manager, device_info))
 
-        for device_info in response.get("array", []):
-            devices.append(CameEnergySensor(manager, device_info))
 
+#        for sensor in ["meter_type", "produced", "instant_power", "unit", "energy_unit", "last_24h_avg", "last_month_avg" ]:
+#            res = response.get(sensor)
+#            if res is not None:
 
-        return devices
+#        return device
+    if feature == "energy":#    cmd = {
+        "cmd_name": "meters_list_req",
+        "topologic_scope": "plant",
+    }
+    response = manager.application_request(cmd, "meters_list_resp")
+
+    for device_info in response.get("array", []):
+        # Creare un sensore per ogni elemento nell'array
+        device = CameEnergySensor(manager, device_info)
+
+        # Aggiungere il sensore alla lista dei dispositivi
+        devices.append(device)
 
 
 
