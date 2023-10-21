@@ -1,4 +1,4 @@
-"""ETI/Domo devices subpackage."""
+y"""ETI/Domo devices subpackage."""
 
 import logging
 from typing import List
