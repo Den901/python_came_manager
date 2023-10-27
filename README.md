@@ -14,6 +14,7 @@ _Python script to interact with Came domotique system._
 - Climate: turn on, turn off, set temperature
 - Relays: turn on, turn off (only activations)
 - Analog Sensor: Read the sensor state
+- Digital Input: Read the sensor state
 
 ## Installation
 
