@@ -11,6 +11,7 @@ from .came_light import CameLight
 from .came_thermo import CameThermo
 from .came_relay import CameRelay
 from .came_opening import CameOpening
+from .came_digitalin import CameDigitalIn
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,6 +34,9 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
     elif feature == "energy":
         cmd_name = "meters_list_req"
         response_name = "meters_list_resp"
+    elif feature == "digitalin":
+        cmd_name = "digitalin_list_req"
+        response_name = "digitalin_list_resp"
     else:
         _LOGGER.warning("Unsupported feature type: %s", feature)
         return devices
@@ -54,6 +58,8 @@ def get_featured_devices(manager, feature: str) -> List[CameDevice]:
             devices.append(CameThermo(manager, device_info))
         elif feature == "energy":
             devices.append(CameEnergySensor(manager, device_info))
+        elif feature == "digitalin":
+            devices.append(CameDigitalIn(manager, device_info))
 
     if feature == "thermoregulation":
         for sensor in ["temperature", "humidity", "pressure"]:
