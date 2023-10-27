@@ -18,6 +18,7 @@ TYPE_ANALOG_SENSOR = -1
 TYPE_GENERIC_RELAY = 11
 TYPE_OPENING = 1
 TYPE_ENERGY_SENSOR = -2 #energy measurement
+TYPE_DIGITALIN = 14
 
 TYPES = {
     # Internal types
