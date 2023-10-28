@@ -6,7 +6,7 @@
 [![PyPI Python version][pypi-pyversion]][pypi]
 [![Maintained][Maintained]](#)
 
-_Python script to interact with Came domotique system._
+_Python script to interact with Came Domotic 3.0 system._
 
 # Features
 
