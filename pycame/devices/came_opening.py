@@ -1,9 +1,10 @@
 """ETI/Domo relay device."""
 
 import logging
-from typing import List
+from typing import Dict, List, Optional
 
 from .base import TYPE_OPENING, CameDevice, DeviceState
+from ..exceptions import ETIDomoUnmanagedDeviceError
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -51,6 +52,16 @@ class CameOpening(CameDevice):
     def open(self): #APERTURA
         """Open the window."""
         self.opening(OPENING_STATE_OPEN)
+
+    @property
+    def act_id(self) -> Optional[int]:
+        """Return the action ID for device."""
+        return self._device_info.get("open_act_id")
+
+    def _check_act_id(self):
+        """Check for act ID availability."""
+        if not self.act_id:
+            raise ETIDomoUnmanagedDeviceError()
 
     def close(self): #CHIUSURA
         """Close the window."""
