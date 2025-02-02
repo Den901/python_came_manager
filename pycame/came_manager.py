@@ -346,3 +346,32 @@ class CameManager:
                     updated |= device.update_state(device_info)
 
         return updated
+
+
+# Scenari
+
+    def get_scenarios(self):
+        """Richiede la lista degli scenari."""
+        response = self._session.post(self._api_url, json={"cmd_name": "scenarios_list_req"})
+        return response.json().get("array", [])
+
+    def activate_scenario(self, scenario_id):
+        """Attiva uno scenario."""
+        self._session.post(self._api_url, json={
+            "cmd_name": "scenario_activation_req_",
+            "id": scenario_id
+        })
+
+    def create_scenario(self, name):
+        """Inizia la registrazione di un nuovo scenario."""
+        return self._session.post(self._api_url, json={
+            "cmd_name": "scenario_registration_start",
+            "name": name
+        })
+
+    def delete_scenario(self, scenario_id):
+        """Elimina uno scenario esistente."""
+        self._session.post(self._api_url, json={
+            "cmd_name": "scenario_delete_req",
+            "id": scenario_id
+        })
