@@ -17,6 +17,7 @@ _Python script to interact with Came Domotic 3.0 system._
 - Relays: turn on, turn off (only activations)
 - Analog Sensor: Read the sensor state
 - Digital Input: Read the sensor state
+- Covers: Up and Down
 
 ## Installation
 
@@ -27,7 +28,7 @@ python3 -m pip install -U pycame
 ## Usage example
 
 ```python
-pip install -e git+https://github.com/Den901/python_came_manager.git#egg=pycame
+docker exec homeassistant pip install --upgrade -e git+https://github.com/Den901/python_came_manager.git#egg=pycame
 
 ```
 
