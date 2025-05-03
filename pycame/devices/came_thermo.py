@@ -122,9 +122,11 @@ class CameThermo(CameDevice):
             "cmd_name": "thermo_zone_config_req",
             "act_id": self.act_id,
             "mode": mode if mode is not None else self._device_info.get("mode"),
-            "set_point": int(temperature * 10)
-            if temperature is not None
-            else self._device_info.get("set_point"),
+            "set_point": (
+                int(temperature * 10)
+                if temperature is not None
+                else self._device_info.get("set_point")
+            ),
             "extended_infos": 0,
         }
         if season is not None:
@@ -146,6 +148,46 @@ class CameThermo(CameDevice):
 
         _LOGGER.debug('Set new status for thermostat "%s": %s', self.name, log)
 
+    @property
+    def fan_mode(self) -> Optional[str]:
+        """Return current fan mode as string (low/medium/high)."""
+        speed = self.fan_speed
+        if speed == THERMO_FAN_SPEED_SLOW:
+            return "LOW"
+        elif speed == THERMO_FAN_SPEED_MEDIUM:
+            return "MEDIUM"
+        elif speed == THERMO_FAN_SPEED_FAST:
+            return "HIGH"
+        elif (
+            speed == THERMO_FAN_SPEED_AUTO or speed == THERMO_FAN_SPEED_OFF
+        ):  # In modalità OFF, il ventilatore è spento ma l'app lo mostra comunque come AUTO
+            return "AUTO"
+        return "AUTO"  # fallback sicuro
+
     def set_target_temperature(self, temp: float) -> None:
         """Set the temperature we try to reach."""
         self.zone_config(temperature=temp)
+
+    def set_fan_speed(self, speed: str) -> None:
+        """Imposta la velocità della ventola del fan coil."""
+        speed_map = {
+            "LOW": THERMO_FAN_SPEED_SLOW,
+            "MEDIUM": THERMO_FAN_SPEED_MEDIUM,
+            "HIGH": THERMO_FAN_SPEED_FAST,
+            "AUTO": THERMO_FAN_SPEED_AUTO,
+        }
+        if speed not in speed_map:
+            _LOGGER.warning(
+                "🚫 Velocità non valida per fan coil %s: %s", self.name, speed
+            )
+            return
+
+        _LOGGER.info("🌀 Imposto velocità fan coil %s su %s", self.name, speed)
+        try:
+            self.zone_config(fan_speed=speed_map[speed])
+        except Exception as e:
+            _LOGGER.error(
+                "⚠️ Errore durante l'impostazione della velocità fan coil %s: %s",
+                self.name,
+                e,
+            )
